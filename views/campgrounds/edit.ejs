@@ -3,37 +3,53 @@
 <div class="row">
     <h1 class="mx-auto">Edit Campground</h1>
     <div class="col-6 offset-3 mb-3">
-        <form class="d-inline" action="/campgrounds" method="POST">
+        <form class="d-inline validated-form" action="/campgrounds/<%= campground._id %>?_method=PUT" method="POST" novalidate>
             <div class="mb-3">
                 <label class="form-label" for="title">Title</label>
-                <input class="form-control" type="text" id="title" name="campground[title]"
+                <input class="form-control" type="text" id="title" name="campground[title]" required
                     value="<%=campground.title %>">
+                <div class="valid-feedback">
+                    Looks good
+                </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="location">Location</label>
-                <input class="form-control" type="text" id="location" name="campground[location]"
+                <input class="form-control" type="text" id="location" name="campground[location]" required
                     value="<%= campground.location%>">
+                <div class="valid-feedback">
+                    Looks good
+                </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="image">Image URL</label>
-                <input class="form-control" type="text" id="image" name="campground[image]"
+                <input class="form-control" type="text" id="image" name="campground[image]" required
                     value="<%= campground.image%>">
+                <div class="valid-feedback">
+                    Looks good
+                </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="price">Price</label>
                 <div class="input-group">
                     <span class="input-group-text">$</span>
-                    <input class="form-control" type="number" step="0.01" id="price" name="campground[price]"
+                    <input class="form-control" type="number" step="0.01" id="price" name="campground[price]" required
                         value="<%= campground.price %>">
+                    <div class="valid-feedback">
+                        Looks good
+                    </div>
                 </div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="description">Description</label>
-                <textarea class="form-control" type="text" id="description"
-                    name="campground[description]"><%= campground.description %></textarea>
+                <textarea class="form-control" type="text" id="description" name="campground[description]"
+                    required><%= campground.description %></textarea>
+                <div class="valid-feedback">
+                    Looks good
+                </div>
             </div>
             <button class="btn btn-success">Edit Campground</button>
         </form>
         <a class="d-inline btn btn-primary" href="/campgrounds/<%= campground._id%>">Back To Campground</a>
     </div>
 </div>
+

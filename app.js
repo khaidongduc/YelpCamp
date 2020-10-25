@@ -3,12 +3,18 @@ const path = require('path');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
-const Campground = require('./models/campground');
+
+const ExpressError = require('./utils/ExpressError');
+
+const campgroundRoute = require('./routes/campground');
+const reviewRoute = require('./routes/review');
+
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 });
 
 const db = mongoose.connection;
@@ -24,49 +30,33 @@ app.set('views', path.join(__dirname, 'views'))
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.engine('ejs', ejsMate);
 
+
+// home page
 app.get('/', (req, res) => {
     res.render('home')
 });
-app.get('/campgrounds', async (req, res) => {
-    const campgrounds = await Campground.find({});
-    res.render('campgrounds/index', { campgrounds })
-});
-app.get('/campgrounds/new', (req, res) => {
-    res.render('campgrounds/new');
+
+app.use('/campgrounds', campgroundRoute);
+app.use('/campgrounds/:id/reviews', reviewRoute);
+
+
+// Error handling
+app.all("*", (req, res, next) => {
+    next(new ExpressError(404, 'Page Not Found'))
 })
 
-app.post('/campgrounds', async (req, res) => {
-    const campground = new Campground(req.body.campground);
-    await campground.save();
-    res.redirect(`/campgrounds/${campground._id}`)
+app.use((err, req, res, next) => {
+    let { statusCode = 500, message = "Something went wrong" } = err;
+    if (!err.message) err.message = "Something Went Wrong";
+
+    res.status(statusCode).render("error", { err });
 })
 
-app.get('/campgrounds/:id', async (req, res,) => {
-    const campground = await Campground.findById(req.params.id)
-    if(campground) res.render('campgrounds/show', { campground });
-    else res.status('404').send('404 Not Found');
-});
-
-app.get('/campgrounds/:id/edit', async (req, res) => {
-    const campground = await Campground.findById(req.params.id)
-    res.render('campgrounds/edit', { campground });
-})
-
-app.put('/campgrounds/:id', async (req, res) => {
-    const { id } = req.params;
-    const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
-    res.redirect(`/campgrounds/${campground._id}`)
-});
-
-app.delete('/campgrounds/:id', async (req, res) => {
-    const { id } = req.params;
-    await Campground.findByIdAndDelete(id);
-    res.redirect('/campgrounds');
-})
-
+// start serving
 app.listen(3000, () => {
     console.log('Serving on port 3000')
 })
