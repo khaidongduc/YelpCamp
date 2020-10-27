@@ -27,7 +27,6 @@ module.exports.loginFlashAndRedirect = (req, res, next) => {
     req.flash('success', 'Welcome Back');
     const redirectUrl = req.session.returnTo || '/campgrounds';
     delete req.session.returnTo;
-    console.log(redirectUrl);
     res.redirect(redirectUrl);
 }
 

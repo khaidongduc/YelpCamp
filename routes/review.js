@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { ensureLoggedIn, validateReview, verifyReviewAuthor } = require('../middlewares');
+const { ensureLoggedIn, validateReview, verifyReviewAuthor } = require('../utils/middlewares');
 const wrapAsync = require('../utils/wrapAsync');
 
 const controller = require('../controllers/review');

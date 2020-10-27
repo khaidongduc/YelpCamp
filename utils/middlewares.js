@@ -1,9 +1,9 @@
-const reviewValidateSchema = require('./validateSchemas/reviewSchema');
-const campgroundValidateSchema = require('./validateSchemas/campgroundSchema')
+const reviewValidateSchema = require('../validateSchemas/reviewSchema');
+const campgroundValidateSchema = require('../validateSchemas/campgroundSchema')
 
-const Campground = require('./models/campground');
-const Review = require('./models/review');
-const ExpressError = require('./utils/ExpressError');
+const Campground = require('../models/campground');
+const Review = require('../models/review');
+const ExpressError = require('./ExpressError');
 
 function validateCampground(req, res, next) {
     const validateResult = campgroundValidateSchema.validate(req.body);
@@ -16,7 +16,6 @@ function validateCampground(req, res, next) {
 
 function validateReview(req, res, next) {
     req.body.review.rating = Number(req.body.review.rating);
-    console.log(req.body);
     const validatedResult = reviewValidateSchema.validate(req.body);
     const { error } = validatedResult;
     if (error) {
@@ -48,8 +47,7 @@ const verifyCampgroundAuthor = async function(req, res, next){
 
 const verifyReviewAuthor = async function(req, res, next){
     const {reviewId:id} = req.params;
-    const review = await Review.findById(id);
-    console.log(review);
+    const review = await Review.findById(id);;
     if(!review.author.equals(req.user._id)){
         req.flash("error", "You don't have the permission to do that!");
         res.redirect(`/campgrounds/${id}`);

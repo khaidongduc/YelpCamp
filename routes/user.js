@@ -4,7 +4,7 @@ const passport = require('passport');
 const controller = require('../controllers/user');
 
 const wrapAsync = require('../utils/wrapAsync');
-const { ensureLoggedIn } = require('../middlewares');
+const { ensureLoggedIn } = require('../utils/middlewares');
 
 const router = express.Router({ mergeParams: true });
 

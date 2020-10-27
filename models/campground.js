@@ -2,38 +2,37 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const Review = require('./review');
+const ImageSchema = new Schema({
+    url: String,
+    filename: String
+});
+
+ImageSchema.virtual('thumbnail').get(function () {
+    return this.url.replace('/upload', '/upload/w_200');
+});
 
 const campgroundSchema = new Schema({
-    title: {
-        type: String,
-        required: true
-    },
+    title: String,
+    images: [ImageSchema],
     price: Number,
     description: String,
-    location: {
-        type: String,
-        required: true
-    },
-    image: {
-        type: String,
+    location: String,
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     },
     reviews: [
         {
             type: Schema.Types.ObjectId,
             ref: 'Review'
         }
-    ],
-    author: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: true
-    }
+    ]
 });
 
-campgroundSchema.post('findOneAndDelete', async function (farm) {
-    if (farm) {
+campgroundSchema.post('findOneAndDelete', async function (campground) {
+    if (campground) {
         await Review.deleteMany({
-            _id: {$in: farm.reviews}
+            _id: {$in: campground.reviews}
         });
     }
 })

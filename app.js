@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
 const express = require('express');
 const path = require('path');
 
@@ -15,7 +19,7 @@ const userRoute = require('./routes/user');
 const campgroundRoute = require('./routes/campground');
 const reviewRoute = require('./routes/review');
 
-const db = require('./dbconnect');
+const db = require('./utils/dbconnect');
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
     console.log("Database connected");
@@ -28,12 +32,12 @@ app.engine('ejs', ejsMate);
 app.set('views', path.join(__dirname, 'views'));
 
 // set up authtenthication
-const aWeek =  1000 * 60 * 60 * 24 * 7;
+const aWeek = 1000 * 60 * 60 * 24 * 7;
 const sessionConfig = {
     secret: "This is a secret",
     resave: false,
     saveUninitialized: true,
-    cookie:{
+    cookie: {
         httpOnly: true,
         expires: Date.now() + aWeek,
         maxAge: aWeek,
@@ -44,7 +48,7 @@ app.use(passport.initialize())
 app.use(passport.session());
 passport.use(new LocalPassport(User.authenticate()));
 passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());  
+passport.deserializeUser(User.deserializeUser());
 
 // others
 app.use(express.urlencoded({ extended: true }));
@@ -58,7 +62,7 @@ app.use((req, res, next) => {
     res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
-    next(); 
+    next();
 })
 
 // routes
