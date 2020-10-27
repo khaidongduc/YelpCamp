@@ -22,7 +22,12 @@ const campgroundSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'Review'
         }
-    ]
+    ],
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    }
 });
 
 campgroundSchema.post('findOneAndDelete', async function (farm) {
