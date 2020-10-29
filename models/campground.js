@@ -50,9 +50,11 @@ campgroundSchema.post('findOneAndDelete', async function (campground) {
 })
 
 campgroundSchema.virtual('properties.popUpMarkup').get(function () {
+    var imageUrl = "https://res.cloudinary.com/dbgsbqpht/image/upload/v1603977765/YelpCamp/3976c789-no_image_available_vmiuqt.jpg";
+    if(this.images.length) imageUrl = this.images[0].url;
     return `<strong><a href="/campgrounds/${this._id}">${this.title}</a><strong>`
         + `<p>${this.description.substring(0, 100)}...</p>` + 
-        `<img class="img-thumbnail w-50" src="${this.images[0].url}">`;
+        `<img class="img-thumbnail w-50" src="${imageUrl}">`;
 });
 
 
