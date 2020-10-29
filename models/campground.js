@@ -51,7 +51,7 @@ campgroundSchema.post('findOneAndDelete', async function (campground) {
 
 campgroundSchema.virtual('properties.popUpMarkup').get(function () {
     return `<strong><a href="/campgrounds/${this._id}">${this.title}</a><strong>`
-        + `<p>${this.description.substring(0, 50)}...</p>` + 
+        + `<p>${this.description.substring(0, 100)}...</p>` + 
         `<img class="img-thumbnail w-50" src="${this.images[0].url}">`;
 });
 
