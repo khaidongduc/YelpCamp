@@ -2,8 +2,9 @@ if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
 
-const secret = process.env.SESSION_SECRET;
-const dbUrl = process.env.DB_URL;
+const secret = process.env.SESSION_SECRET || "asecret";
+const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/yelp-camp";
+const port = process.env.PORT || 3000;
 
 const express = require('express');
 const path = require('path');
@@ -166,6 +167,6 @@ app.use((err, req, res, next) => {
 })
 
 // start serving
-app.listen(3000, () => {
-    console.log('Serving on port 3000')
+app.listen(port, () => {
+    console.log(`Serving on port ${port}`);
 })
