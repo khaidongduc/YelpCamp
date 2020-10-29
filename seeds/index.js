@@ -2,6 +2,7 @@ if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
 
+
 const mongoose = require('mongoose');
 const cities = require('./cities');
 const { places, descriptors } = require('./seedHelpers');
@@ -33,7 +34,7 @@ const seedDB = async () => {
             location: location,
             geometry: geoData.body.features[0].geometry,
             title: `${sample(descriptors)} ${sample(places)}`,
-            images: [{url:'https://source.unsplash.com/collection/483251'}],
+            images: [{url: 'https://source.unsplash.com/collection/483251'}],
             description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad id dolorum quasi similique harum tenetur, dicta reprehenderit sit sapiente vitae, accusantium distinctio! Adipisci voluptatum quod accusamus officia dolorem exercitationem aliquam.',
             price: 10 + Math.floor(Math.random() * 20),
             author: "5f97aed8e4a5a07f00eca4ac"
