@@ -2,7 +2,7 @@ if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
 
-const secret = process.env.SESSION_SECRET || "asecret";
+const secret = process.env.SESSION_SECRET || "a secret";
 const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/yelp-camp";
 const port = process.env.PORT || 3000;
 
@@ -46,7 +46,7 @@ app.set('view engine', 'ejs');
 app.engine('ejs', ejsMate);
 app.set('views', path.join(__dirname, 'views'));
 
-// set up authtenthication
+// set up authentication
 const MongoDBStore = require('connect-mongo')(session);
 const store = new MongoDBStore({
     url: dbUrl,

@@ -1,5 +1,3 @@
-const express = require('express');
-
 const multer = require('multer');
 const { storage } = require('../cloudinary/index');
 const upload = multer({ storage });
@@ -8,7 +6,8 @@ const wrapAsync = require('../utils/wrapAsync');
 const { ensureLoggedIn, verifyCampgroundAuthor, validateCampground } = require('../utils/middlewares');
 
 const controller = require('../controllers/campground');
-const router = express.Router();
+const express = require('express');
+const router = express.Router({ mergeParams: true });
 
 router.route('/')
     .get(wrapAsync(controller.getIndex))
